@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Python Server</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="chat-container">
+    <input type="text" id="usernameInput" placeholder="Username" onkeypress="handleUsernameKeyPress(event)">
+    <button onclick="connect()">Conectar</button>
+
+    <div id="chat">
+      <textarea id="messages" readonly></textarea>
+      <input type="text" id="messageInput" placeholder="Escreva sua mensagem..." onkeypress="handleKeyPress(event)">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <button id="disconnectButton" onclick="disconnect()">Desconectar</button>
+
+  <script>
+    let username;
+    let socket;
+
+    function connect() {
+    console.log('Tentando conectar...');
+    username = document.getElementById('usernameInput').value;
+    if (!username) {
+        alert('Por favor escolha um username.');
+        return;
+    }
+
+    socket = new WebSocket('ws://localhost:8080');
+    socket.username = username;
+
+    socket.addEventListener('open', () => {
+        console.log('Conexão aberta com sucesso!');
+        document.getElementById('chat').style.display = 'block';
+        document.getElementById('usernameInput').style.display = 'none';
+        document.querySelector('button').style.display = 'none';
+        document.getElementById('messageInput').style.display = 'block';
+        document.getElementById('disconnectButton').style.display = 'block';
+        document.getElementById('messages').value = '';
+
+        // Envia a mensagem com o username ao servidor
+        socket.send(JSON.stringify({ username }));
+    });
+
+    socket.addEventListener('message', (event) => {
+        const messagesTextarea = document.getElementById('messages');
+        const message = event.data;
+
+        // Adicionar a mensagem ao textarea de mensagens
+        messagesTextarea.value += message + '\n';
+    });
+    
+    socket.addEventListener('close', () => {
+        console.log('Conexão fechada');
+        document.getElementById('chat').style.display = 'none';
+        document.getElementById('usernameInput').style.display = 'block';
+        document.querySelector('button').style.display = 'block';
+        document.getElementById('messageInput').style.display = 'none';
+        document.getElementById('disconnectButton').style.display = 'none';
+
+        
+    });
+}
+
+
+function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value;
+
+    if (message.trim() !== '') {
+        // Envia a mensagem para o servidor via WebSocket
+        socket.send(message);
+
+        messageInput.value = '';
+    }
+}
+
+
+function disconnect() {
+    if (socket && socket.username) {
+       
+        socket.close();
+    }
+}
+
+function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); 
+        sendMessage();
+    }
+}
+
+function handleUsernameKeyPress(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); 
+        connect();
+    }
+}
+
+</script>
+
+</body>
+</html>

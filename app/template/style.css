@@ -1,0 +1,84 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #212529;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+  #chat-container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 400px;
+    margin-bottom: 10px;
+  }
+
+  #usernameInput, #messageInput {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  #usernameInput {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  #messageInput {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #fd7e14;
+    color: #fff;
+    border: none;
+    border-radius: 0 0 8px 8px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #ec6a00;
+  }
+
+  #chat {
+    display: none;
+  }
+
+  #messages {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    resize: none;
+  }
+
+  #disconnectButton {
+    display: none;
+    width: 400px;
+    padding: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  #disconnectButton:hover {
+    background-color: #c82333;
+  }
+
